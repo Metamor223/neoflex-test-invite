@@ -5,6 +5,16 @@
     margin-bottom: 28px;
 }
 
+.header h2{
+    font-weight: 700;
+}
+
+.header-images{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .header-images img{
-    padding: 20px;
+    padding: 20px 0px 20px 0px;
 }

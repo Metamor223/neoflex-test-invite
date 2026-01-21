@@ -8,14 +8,14 @@ const Footer = () => {
     return(
         <div className="footer">
             <h2>QPICK</h2>
-            <div>
+            <div className="footer-inside-links">
                 <h3>Избранное</h3>
                 <h3>Корзина</h3>
                 <h3>Контакты</h3>
             </div>
-            <div>
+            <div className="language-container">
                 <h3>Условия сервиса</h3>
-                <div>
+                <div className="little-language-container">
                     <img src={planet} alt="planet"/>
                     <h4>Рус</h4>
                     <h4>Eng</h4>
