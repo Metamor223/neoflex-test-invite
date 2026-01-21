@@ -1,14 +1,16 @@
 import "./header.css"
 import cart from "../../media/cart.svg"
 import heart from "../../media/heart.svg"
+import { Link } from "react-router"
+import { CART_ROUTE, CATALOG_ROUTE } from "../../utils/consts"
 
-const Header = () => {    
+const Header = () => {      
     return(
         <div className="header">
-            <h2>QPICK</h2>
+            <Link to={CATALOG_ROUTE}><h2>QPICK</h2></Link>
             <div className="header-images"> 
-                <img src={heart} alt="" ></img>
-                <img src={cart} alt=""></img>
+                <Link><img src={heart} alt="" ></img></Link>
+                <Link to={CART_ROUTE}><img src={cart} alt=""></img></Link>
             </div>
         </div>
     )

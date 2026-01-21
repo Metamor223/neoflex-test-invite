@@ -10,3 +10,7 @@
 .app-container{
   width: 77%;
 }
+
+.container{
+  display: flex;
+}
