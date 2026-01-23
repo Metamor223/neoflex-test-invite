@@ -1,8 +1,8 @@
 import "./footer.css"
-import whatsapp from "../../media/Whatsapp.svg";
-import Telegram from "../../media/Telegram.svg";
-import VK from "../../media/VK.svg";
-import planet from "../../media/planet.svg"
+import whatsapp from "../../../assets/icons/Whatsapp.svg";
+import Telegram from "../../../assets/icons/Telegram.svg";
+import VK from "../../../assets/icons/VK.svg";
+import planet from "../../../assets/icons/planet.svg"
 
 const Footer = () => {    
     return(

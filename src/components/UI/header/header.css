@@ -23,3 +23,30 @@
 .header-images img{
     padding: 20px 0px 20px 0px;
 }
+
+.circle2,.circle1{
+    height: 17.4px;
+    width: 17.4px;
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    z-index: 1000;
+    background-color:#FFA542;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.circle2{
+    top: 1.5%;
+    right: 11%;
+}
+
+.circle1{
+    top: 2%;
+    right: 13.5%;
+}
+
+.circle-none{
+    display: none;
+}

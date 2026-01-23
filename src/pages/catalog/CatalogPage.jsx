@@ -1,10 +1,10 @@
 import "./CatalogPage.css"
+import ProductList from "../../components/UI/product/productList";
 
 const CatalogPage = () =>{
-    
     return(
         <div className="catalog-container">
-            <p>Привет ебло</p>
+            <ProductList/>
         </div>
     )
 }
