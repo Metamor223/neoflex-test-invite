@@ -13,8 +13,22 @@ export function DeleteOneFromStorage(id) {
     return newCart || []
 }
 
+export function RemoveOneFromStorage(id) {
+    const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+    const index = cart.findIndex(item => item.id === id);
+    if (index !== -1) {
+        cart.splice(index, 1); 
+    }   
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event("cartUpdated"));
+}
+
+
 export function getGroupedCart() {
     const cart = JSON.parse(sessionStorage.getItem('cart'));
+    if(!cart){
+        return []
+    }
     const grouped = cart.reduce((acc, item) => {
         const existingItem = acc.find(i => i.id === item.id);
         if (existingItem) {

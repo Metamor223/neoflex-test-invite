@@ -7,6 +7,11 @@
     align-items: baseline;
 }
 
+.product-list-container h3{
+    color: #838383;
+    font-size: 20px;
+}
+
 .catalog-container{
     height: max-content;
     width: 100%;
@@ -22,6 +27,12 @@
 
 .title-price-container{
     align-items: baseline;
+}
+
+.title-price-container h3{
+    margin: 54px 0 25px 0;
+    color: #000000;
+    font-size: 17px;
 }
 
 .catalog-container ul{
@@ -40,6 +51,7 @@
     border-radius: 30px;
     align-items: center;
     flex-direction: column;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
 }
 
 .price-container{
@@ -50,12 +62,14 @@
 .price-container h4{
     color: #FFCE7F;
     text-decoration: line-through;
-    margin: 0 0 9px 0;
+    margin: 0;
+    font-size: 13px;
 }
 
 .price-container h3{
     color: #FFA542;
     margin: 0;
+    font-size: 17px;
 }
 
 .rate-container{
@@ -69,14 +83,56 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 17px;
 }
 
 .rate-container button{
     border: none;
     background-color: transparent;
+    padding: 0;
     cursor: pointer;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 17px;
+    transition: 0.3s;
+}
+
+.rate-container button:hover{
+    color: #FFA542;
+}
+
+.img-container{
+    width: 220px;
+    height: 237px;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-circle-con{
+    width: max-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.circle{
+    height: 17.4px;
+    width: 17.4px;
+    background-color:#FFA542;
+    border-radius: 50%;
+    margin-right: 15px;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    text-align: center;
+    justify-content:center;
+    transition: 0.3s;
+}
+
+.circle:hover{
+    height: 20px;
+    width: 20px;
 }
 
 

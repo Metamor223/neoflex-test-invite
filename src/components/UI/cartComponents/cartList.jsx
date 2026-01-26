@@ -1,17 +1,14 @@
-import {getGroupedCart} from "../../functions/StorageFunctions";
 import Cart from "./Cart";
-import {useUpdateFunction } from "../../functions/useUpdateFunction";
 
 
-const CartList = () =>{
-
-    const cartItems = useUpdateFunction(getGroupedCart);
-    
+const CartList = ({cartItems}) =>{
     return(
         <ul className="cart-list-container">
-            {cartItems.map(item => 
-                <Cart key={item.id} headphone={item}/>
-            )}
+            {cartItems.length > 0 ? 
+                cartItems.map(item => 
+                    <Cart key={item.id} headphone={item}/>) :
+                <p>В данный момент здесь пусто</p>
+            }
         </ul>
     )
 }

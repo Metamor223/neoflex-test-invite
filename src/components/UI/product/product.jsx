@@ -9,8 +9,10 @@ const Product = ({headphone}) =>{
     }
 
     return(
-        <li className="card">
-            <img src={headphone.img} alt={headphone.title} />
+        <li className="card" key={headphone.id}>
+            <div className="img-container">
+                <img src={headphone.img} alt={headphone.title} />
+            </div>
             <div className="title-price-container">
                 <h3>{headphone.title}</h3>
                 <div className="price-container">
@@ -20,7 +22,10 @@ const Product = ({headphone}) =>{
             </div>
             <div className="rate-container">
                 <h3><img src={star} alt="star"/>{headphone.rate}</h3>
-                <button onClick={handleBuy}>Купить</button>
+                <div className="btn-circle-con">
+                    <div className="circle">i</div>
+                    <button onClick={handleBuy}>Купить</button>
+                </div>
             </div>
         </li>
     )
