@@ -8,6 +8,8 @@ const Cart = ({headphone}) =>{
         console.log("Добавлено", headphone.title)
     }
 
+    const priceQuantity = headphone.quantity * headphone.price
+
     const handleDecrease = () =>{
         RemoveOneFromStorage(headphone.id)
         console.log("1 товар убран из корзины")
@@ -40,7 +42,7 @@ const Cart = ({headphone}) =>{
                             <div className="plus"></div>
                         </div>
                     </div>
-                    <h3>{headphone.price} ₽</h3>
+                    <h3>{priceQuantity} ₽</h3>
                 </div>
             </div>
         </li>

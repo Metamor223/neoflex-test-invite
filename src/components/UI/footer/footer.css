@@ -2,13 +2,18 @@
     display: flex;
 }
 
-.footer-images img, .language-container h3, .little-language-container h4, .footer-inside-links h3{
+.footer-images img, .language-container h3, .little-language-container h4, .footer-inside-links h3, .footer-inside-links a{
     cursor: pointer;
 }
 
-.little-language-container h4:hover, .language-container h3:hover, .footer-inside-links h3:hover{
+.little-language-container h4:hover, .language-container h3:hover, .footer-inside-links h3:hover, .footer-inside-links a:hover{
     color: #FFA542;
     transition: 0.3s;
+}
+
+.footer-inside-links a{
+    color: black;
+    text-decoration: none;
 }
 
 .footer{

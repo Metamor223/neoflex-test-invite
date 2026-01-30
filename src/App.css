@@ -14,5 +14,7 @@
 }
 
 .container{
-  min-height: 74.5%;
+  min-height: 75.4%;
+  display: flex;
+  justify-content: center;
 }

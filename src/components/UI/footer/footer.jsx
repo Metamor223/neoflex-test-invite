@@ -3,6 +3,8 @@ import whatsapp from "../../../assets/icons/Whatsapp.svg";
 import Telegram from "../../../assets/icons/Telegram.svg";
 import VK from "../../../assets/icons/VK.svg";
 import planet from "../../../assets/icons/planet.svg"
+import { CART_ROUTE } from "../../utils/consts";
+import { Link } from "react-router";
 
 const Footer = () => {    
     return(
@@ -11,7 +13,7 @@ const Footer = () => {
                 <h2>QPICK</h2>
                 <div className="footer-inside-links">
                     <h3>Избранное</h3>
-                    <h3>Корзина</h3>
+                    <Link to={CART_ROUTE}>Корзина</Link>
                     <h3>Контакты</h3>
                 </div>
                 <div className="language-container">
@@ -23,9 +25,9 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="footer-images"> 
-                    <img src={VK} alt="VK"/>
-                    <img src={Telegram} alt="Telegram"/>
-                    <img src={whatsapp} alt="whatsapp"/>
+                    <a href="https://vk.com/dmitrypanov223"><img src={VK} alt="VK"/></a>
+                    <a href="https://t.me/tumb0chka1"><img src={Telegram} alt="Telegram"/></a>
+                    <a href="https://api.whatsapp.com/send?phone=79119387037"><img src={whatsapp} alt="whatsapp"/></a>
                 </div>
             </div>
         </div>

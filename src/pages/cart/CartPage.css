@@ -1,3 +1,7 @@
+.no-scroll{
+    overflow: hidden;
+}
+
 .cart-container{
     width: 100%;
     display: flex;
@@ -168,7 +172,7 @@
 }
 
 .total-amount-container{
-    height: 115px;
+    height: 100px;
     width: 350px;
     display: flex;
     flex-direction: column;

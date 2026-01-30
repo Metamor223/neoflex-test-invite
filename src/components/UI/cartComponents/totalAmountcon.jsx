@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Form, Link } from "react-router";
 import { PAYMENT_ROUTE } from "../../utils/consts";
 
 const TotalAmount = ({cartItems}) =>{
