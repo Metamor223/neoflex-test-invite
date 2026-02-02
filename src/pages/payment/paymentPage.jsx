@@ -2,7 +2,7 @@ import {useState} from "react"
 import {Link} from "react-router"
 import "./PaymentPage.css"
 import { CART_ROUTE } from "../../components/utils/consts"
-import { cardDateFormat, cardNumberFormat, phoneNumberFormat } from "../../components/functions/Validation"
+import { cardDateFormat, cardNumberFormat, phoneNumberFormat, validateAddress, validateCVV, validateCardDate, validateCardNumber, validatePaymentForm, validatePhone } from "../../components/functions/Validation"
 import { getGroupedCart } from "../../components/functions/StorageFunctions"
 
 const PaymentPage = () =>{		
@@ -11,8 +11,11 @@ const PaymentPage = () =>{
 	const [phoneNumber, setPhoneNumber] = useState(JSON.parse(sessionStorage.getItem("phoneNumber")) || "")
 	const [cardNumber, setCardNumber] = useState(JSON.parse(sessionStorage.getItem("cardNumber")) || "")
 	const [cardDate, setCardDate] = useState(JSON.parse(sessionStorage.getItem("cardDate")) || "")
-	const [CVV, setCVV] = useState(JSON.parse(sessionStorage.getItem("CVV")) || "")
-	const [cart, setCart] = useState(getGroupedCart)
+	const [cardCVV, setCardCVV] = useState(JSON.parse(sessionStorage.getItem("cardCVV")) || "")
+	const [errors, setErrors] = useState({});
+    const [touched, setTouched] = useState({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [cart] = useState(getGroupedCart)
 
 	const finalSum = cart.reduce((sum, item) => {
         return sum + (item.price * item.quantity);
@@ -23,14 +26,60 @@ const PaymentPage = () =>{
 		cartItems.push(" id: " + cart[i].id + " Название: " + cart[i].title + " Количество: " + cart[i].quantity)
 	}
 
+	const handleBlur = (field) => {
+        setTouched(prev => ({ ...prev, [field]: true }));
+        let validation;
+        switch (field) {
+            case 'address':
+                validation = validateAddress(address);
+                break;
+            case 'phoneNumber':
+                validation = validatePhone(phoneNumber);
+                break;
+            case 'cardNumber':
+                validation = validateCardNumber(cardNumber);
+                break;
+            case 'cardDate':
+                validation = validateCardDate(cardDate);
+                break;
+            case 'cardCVV':
+                validation = validateCVV(cardCVV);
+                break;
+            default:
+                return;
+        }
+        setErrors(prev => ({
+            ...prev,
+            [field]: validation.isValid ? '' : validation.error
+        }));
+    };
+
 	const handlePay = () =>{
+		setTouched({
+			address: true,
+			phoneNumber: true,
+			cardNumber: true,
+			cardDate: true,
+			cardCVV: true
+		});
+        const formData = { address, phoneNumber, cardNumber, cardDate, cardCVV };
+        const validation = validatePaymentForm(formData);
+        if (!validation.isValid) {
+            setErrors(validation.errors);
+            return;
+        }
+        if (cart.length === 0) {
+            alert('Корзина пуста!');
+            return;
+        }
+        setIsSubmitting(true);
 		try{
 			const formData = new FormData()
 			formData.append("address",address)
 			formData.append("phoneNumber",phoneNumber)
 			formData.append("cardNumber",cardNumber)
 			formData.append("cardDate",cardDate)
-			formData.append("CVV",CVV)
+			formData.append("cardCVV",cardCVV)
 			formData.append("cart",cartItems)
 			formData.append("finalSum",finalSum)
 			const formDataObject = {}
@@ -38,11 +87,12 @@ const PaymentPage = () =>{
             	formDataObject[key] = value;
         	}
 			console.log(formDataObject);
-			if(JSON.stringify(sessionStorage.setItem('Данные пользователя',formDataObject))){
-				console.log("успешно отправлено")
-			}
+			sessionStorage.setItem('Данные пользователя',JSON.stringify(formDataObject))
+			alert("успешно отправлено")
 		} catch (e){
 			console.log(e);
+		} finally {
+			setIsSubmitting(false)
 		}
 	}
 
@@ -57,8 +107,29 @@ const PaymentPage = () =>{
 				<div className="address-container">
 					<h2>Куда</h2>
 					<form>
-						<h3>Адресс доставки<input required placeholder="г.Санкт-Петербург, Невский проспект, 40-42" value={address} onChange={(e) => setAddress(e.target.value)} /></h3>
-						<h3>Номер телефона<input required placeholder="+7 (999) 453-32-54"  type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(phoneNumberFormat(e.target.value))}/></h3>
+						<h3>Адресс доставки *
+							<input 
+								onBlur={() => handleBlur('address')}
+								placeholder="г.Санкт-Петербург, Невский проспект, 40-42"
+								value={address}
+								className={touched.address && errors.address ? 'input-error' : ''}
+								onChange={(e) => setAddress(e.target.value)} />
+							{touched.address && errors.address && (
+                                <span className="error-message">{errors.address}</span>
+                            )}
+						</h3>
+						<h3>Номер телефона *
+							<input
+								placeholder="+7 (999) 453-32-54"
+								type="tel" 
+								value={phoneNumber} 
+								className={touched.phoneNumber && errors.phoneNumber ? 'input-error' : ''}
+								onBlur={() => handleBlur('phoneNumber')}
+								onChange={(e) => setPhoneNumber(phoneNumberFormat(e.target.value))}/>
+							{touched.phoneNumber && errors.phoneNumber && (
+                                <span className="error-message">{errors.phoneNumber}</span>
+                            )}
+						</h3>
 					</form>
 				</div>
 				<div className="cart-quan-price-con">
@@ -76,14 +147,51 @@ const PaymentPage = () =>{
 					</div>
 				</div>
 				<div className="card-container">
-					<h2>Данные карты для оплаты</h2>
+					<h2>Данные карты для оплаты *</h2>
 					<form>
-						<input id="card-number" required placeholder="0000 0000 0000 0000" value={cardNumber} onChange={(e) => setCardNumber(cardNumberFormat(e.target.value))}/>
-						<input id="card-date" required placeholder="00/00" value={cardDate} onChange={(e) => setCardDate(cardDateFormat(e.target.value))}/>
-						<input id="card-cvv" required placeholder="000" maxLength={3} value={CVV} onChange={(e) => setCVV(e.target.value)}/>
+						<div className="form-group">
+							<input 
+								id="card-number"
+								placeholder="0000 0000 0000 0000" 
+								className={touched.cardNumber && errors.cardNumber ? 'input-error' : ''}
+								value={cardNumber} 
+								onBlur={() => handleBlur('cardNumber')}
+								onChange={(e) => setCardNumber(cardNumberFormat(e.target.value))}/>
+							{touched.cardNumber && errors.cardNumber && (
+								<span className="error-message">{errors.cardNumber}</span>
+							)}
+						</div>
+						<div className="form-group">
+							<input 
+								id="card-date" 
+								placeholder="00/00" 
+								value={cardDate} 
+								className={touched.cardDate && errors.cardDate ? 'input-error' : ''}
+								onBlur={() => handleBlur('cardDate')}
+								onChange={(e) => setCardDate(cardDateFormat(e.target.value))}/>
+							{touched.cardDate && errors.cardDate && (
+								<span className="error-message">{errors.cardDate}</span>
+							)}
+						</div>	
+						<div className="form-group">
+							<input 
+								id="card-cvv" 
+								placeholder="000" 
+								maxLength={3} 
+								value={cardCVV} 
+								className={touched.cardCVV && errors.cardCVV ? 'input-error' : ''}
+								onBlur={() => handleBlur('cardCVV')}
+								onChange={(e) => setCardCVV(e.target.value)}/>
+							{touched.cardCVV && errors.cardCVV && (
+								<span className="error-message">{errors.cardCVV}</span>
+							)}
+						</div>
 					</form>
 				</div>
-				<button onClick={handlePay}>Оформить заказ</button>
+				{errors.submit && (
+                    <div className="submit-error">{errors.submit}</div>
+                )}
+				<button onClick={handlePay} disabled={isSubmitting || cart.length === 0}>Оформить заказ</button>
 			</div>
 		</div>
 	)
